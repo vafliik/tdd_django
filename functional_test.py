@@ -22,7 +22,7 @@ class NewVisitorTest(unittest.TestCase):
 
 		#The site has this tempting imput box, so he tries entering
 		#his first to-do item "Buy soap"
-		inputbox = self.browser.find_element_by_id('id_new_iteem')
+		inputbox = self.browser.find_element_by_id('id_new_item')
 		self.assertEqual(inputbox.get_attribute('placeholder'),'Enter a to-do item')
 
 		inputbox.send_keys('Buy soap')
@@ -38,7 +38,7 @@ class NewVisitorTest(unittest.TestCase):
 		
 		#There is still this lovely input field, so Ramirez imediatelly continues
 		#entering his items. The next one is "Have a bath"
-		inputbox = self.browser.find_element_by_id('id_new_iteem')
+		inputbox = self.browser.find_element_by_id('id_new_item')
 		inputbox.send_keys('Have a bath')
 		inputbox.send_keys(Keys.ENTER)
 
