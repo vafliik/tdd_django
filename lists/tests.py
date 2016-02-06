@@ -12,5 +12,11 @@ class HomePageTest(TestCase):
 		
 		self.assertTrue(response.content.startswith(b'<html>'))
 		self.assertIn(b'<title>To-Do Lists</title>', response.content)
-		self.assertTrue(response.content.endswith(b'</html>'))
+		self.assertTrue(response.content.strip().endswith(b'</html>'))
+		
+		with open('lists/templates/home.html') as f:
+			expected_content=f.read()
+		
+		#use decode to compare byte with string
+		self.assertEqual(response.content.decode(), expected_content)
 		
