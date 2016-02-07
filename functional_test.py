@@ -11,6 +11,13 @@ class NewVisitorTest(unittest.TestCase):
 	def tearDown(self):
 		self.browser.quit()
 
+	def check_for_row_in_list_table(self, expected_row):
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+
+		self.assertIn(expected_row, [row.text for row in rows])
+		
+
 	def test_todo_list_visible(self):
 		#Ramirez heard about our great site, so he enters the address to browser
 		self.browser.get('http://localhost:8000')
@@ -31,10 +38,7 @@ class NewVisitorTest(unittest.TestCase):
 		#The list now contains first item: "1. Buy soap" and Ramirez is happy
 		inputbox.send_keys(Keys.ENTER)
 		
-		table = self.browser.find_element_by_id('id_list_table')
-		rows = table.find_elements_by_tag_name('tr')
-
-		self.assertIn('1. Buy soap', [row.text for row in rows])
+		self.check_for_row_in_list_table('1. Buy soap')
 		
 		#There is still this lovely input field, so Ramirez imediatelly continues
 		#entering his items. The next one is "Have a bath"
@@ -43,11 +47,8 @@ class NewVisitorTest(unittest.TestCase):
 		inputbox.send_keys(Keys.ENTER)
 
 		#The table with to-dos is updated again, displaying the new item as next
-		table = self.browser.find_element_by_id('id_list_table')
-		rows = table.find_elements_by_tag_name('tr')
-
-		self.assertIn('2. Have a bath', [row.text for row in rows])
-		self.assertIn('1. Buy soap', [row.text for row in rows])
+		self.check_for_row_in_list_table('2. Have a bath')
+		self.check_for_row_in_list_table('1. Buy soap')
 
 		self.fail('We are not finished with the test yet ...')		
 
