@@ -51,6 +51,40 @@ class NewVisitorTest(LiveServerTestCase):
 		self.check_for_row_in_list_table('2. Have a bath')
 		self.check_for_row_in_list_table('1. Buy soap')
 
+		#Ramirez has his list on unique URL
+		ramirez_list_url = self.browser.current_url
+		self.assertRegex(ramirez_list_url, '/lists/.+')
+		
+		#Now Juanita at the other side of village comes to her PC and wants to check this
+		#TO DO list page that she heard about in zapateria
+
+		##Use new browser session
+		self.browser.quit()
+		self.browser = webdriver.Firefox()
+
+		#Juanita visits home page. Ramirez's list is not there of course
+		self.browser.get(self.live_server_url)
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Have a bath',page_text)
+		self.assertNotIn('Buy soap',page_text)
+	
+		#Juanita starts a new list by entering new item
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('Buy new shoes')
+		inputbox.send_keys(Keys.ENTER)
+		
+		#Juanita gets her own list URL
+		juanita_list_url = self.browser.current_url
+		self.assertRegex(juanita_list_url, '/lists/.+')
+		self.assertNotEqual(juanita_list_url,ramirez_list_url)
+
+		#After the list iscreated, there is no traceof Ramirez's list
+		page_text = sel.browser.find_element_by_tag_name('body').text
+		self.assertNotIn('Have a bath',page_text)
+		self.assertNotIn('Buy soap',page_text)
+
+		#They are both satisfied
+
 		self.fail('We are not finished with the test yet ...')		
 
 if __name__ == '__main__':

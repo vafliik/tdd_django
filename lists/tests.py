@@ -13,16 +13,6 @@ class HomePageTest(TestCase):
 		#use decode to compare byte with string
 		self.assertEqual(response.content.decode(), expected_content)
 		
-	def test_home_page_shows_items_from_db(self):
-		Item.objects.create(text='Item 1')
-		Item.objects.create(text='Item 2')
-
-		request = HttpRequest()
-		response = home_page(request)
-		
-		self.assertIn('Item 1', response.content.decode())
-		self.assertIn('Item 2', response.content.decode())
-
 	def test_home_page_can_save_post_requests_to_db(self):
 		request = HttpRequest()
 		request.method = 'POST'
@@ -34,7 +24,19 @@ class HomePageTest(TestCase):
 		self.assertEqual(item_from_db.text, 'New item')
 		
 		self.assertEqual(response.status_code, 302)
-		self.assertEqual(response['Location'], '/')
+		self.assertEqual(response['Location'], '/lists/the-only-list-in-the-world/')
+
+class ListViewTest(TestCase):
+
+	def test_lists_page_shows_items_from_db(self):
+		Item.objects.create(text='Item 1')
+		Item.objects.create(text='Item 2')
+		
+		response = self.client.get('/lists/the-only-list-in-the-world/')
+
+		self.assertIn('Item 1', response.content.decode())
+		self.assertContains(response, 'Item 2')
+
 
 from lists.models import Item
 class ItemModelTest(TestCase):
