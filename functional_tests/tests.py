@@ -1,8 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from django.test import LiveServerTestCase
 import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
 	def setUp(self):
 		self.browser=webdriver.Firefox()
@@ -20,7 +21,7 @@ class NewVisitorTest(unittest.TestCase):
 
 	def test_todo_list_visible(self):
 		#Ramirez heard about our great site, so he enters the address to browser
-		self.browser.get('http://localhost:8000')
+		self.browser.get(self.live_server_url)
 		#He notices the To-Do in browser title and he likes that
 		#Also the heading is there, so Ramirez knows heis on the right track
 		self.assertIn('To-Do',self.browser.title)
