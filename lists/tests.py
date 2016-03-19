@@ -29,8 +29,9 @@ class NewListViewTest(TestCase):
 class ListViewTest(TestCase):
 
 	def test_lists_page_shows_items_from_db(self):
-		Item.objects.create(text='Item 1')
-		Item.objects.create(text='Item 2')
+		list_ = List.objects.create()
+		Item.objects.create(text='Item 1',list=list_)
+		Item.objects.create(text='Item 2',list=list_)
 		
 		response = self.client.get('/lists/the-only-list-in-the-world/')
 
@@ -45,24 +46,24 @@ from lists.models import Item, List
 class ItemModelTest(TestCase):
 
 	def test_saving_and_retrieving_from_db(self):
-		#first_list = List()
-		#first_list.save()
+		first_list = List()
+		first_list.save()
 
 		first_item = Item()
 		first_item.text = 'Very first item'
-		#first_item.list = first_list
+		first_item.list = first_list
 		first_item.save() 
 		
 		second_item = Item()
 		second_item.text = 'The second item'
-		#second_item.list = first_list
+		second_item.list = first_list
 		second_item.save()
 
 		first_item_from_db = Item.objects.all()[0]
 		self.assertEqual(first_item_from_db.text, 'Very first item')
-		#self.assertEqual(first_item_from_db.list, first_list)
+		self.assertEqual(first_item_from_db.list, first_list)
 
 		second_item_from_db = Item.objects.all()[1]
 		self.assertEqual(second_item_from_db.text, 'The second item')
-		#self.assertEqual(second_item_from_db.list, first_list)
+		self.assertEqual(second_item_from_db.list, first_list)
  
