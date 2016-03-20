@@ -79,7 +79,7 @@ class NewVisitorTest(LiveServerTestCase):
 		self.assertNotEqual(juanita_list_url,ramirez_list_url)
 
 		#After the list iscreated, there is no traceof Ramirez's list
-		page_text = sel.browser.find_element_by_tag_name('body').text
+		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNotIn('Have a bath',page_text)
 		self.assertNotIn('Buy soap',page_text)
 
