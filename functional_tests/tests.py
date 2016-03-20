@@ -85,7 +85,6 @@ class NewVisitorTest(LiveServerTestCase):
 
 		#They are both satisfied
 
-		self.fail('We are not finished with the test yet ...')		
 
 if __name__ == '__main__':
 	unittest.main(warnings='ignore')
